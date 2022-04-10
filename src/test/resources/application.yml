@@ -24,3 +24,8 @@ client:
     tokenUrl: http://localhost:${wiremock.server.port}/connect/token
     clientID: test-client-id
     clientSecret: test-client-secret
+
+basicAuth:
+  realm: macro-knap-sack
+  userId: testAdmin
+  password: testAdmin
