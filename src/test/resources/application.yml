@@ -1,7 +1,26 @@
 spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          fat-secret:
+            client-id: d5b99f1f0b20445e8ac97ca21dcd5e6d
+            client-secret: 04af0afbd5684713a2a19475bbb954d0
+            authorization-grant-type: client_credentials
+            client-authentication-method: post
+        provider:
+          fat-secret:
+            token-uri: https://oauth.fatsecret.com/connect/token
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
 
 application:
   myName: "Test Name"
+
+client:
+  fatSecret:
+    url: http://localhost:${wiremock.server.port}/rest/server.api
+    tokenUrl: http://localhost:${wiremock.server.port}/connect/token
+    clientID: test-client-id
+    clientSecret: test-client-secret
