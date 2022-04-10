@@ -2,17 +2,14 @@ package com.pogrammerlin.macroknapsack.integrationTest;
 
 import com.pogrammerlin.macroknapsack.client.FatSecret.dto.FatSecretSearchResponse;
 import com.pogrammerlin.macroknapsack.controller.DefaultController;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.InputStream;
 
