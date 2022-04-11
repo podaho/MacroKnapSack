@@ -1,5 +1,6 @@
 package com.pogrammerlin.macroknapsack.client.FatSecret.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -14,10 +15,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Foods {
-    @JsonProperty("total_results")
-    private String totalResults;
-
-    @JsonProperty("food")
-    private List<FoodBySearch> food;
+public class Servings {
+    @JsonProperty("serving")
+    @JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
+    private List<Serving> servings;
 }

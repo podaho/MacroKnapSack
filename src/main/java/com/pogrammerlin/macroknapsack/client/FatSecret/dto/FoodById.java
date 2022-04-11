@@ -7,17 +7,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
-
 @Data
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Foods {
-    @JsonProperty("total_results")
-    private String totalResults;
+public class FoodById {
+    @JsonProperty("food_id")
+    private String externalId;
 
-    @JsonProperty("food")
-    private List<FoodBySearch> food;
+    @JsonProperty("food_name")
+    private String name;
+
+    @JsonProperty("servings")
+    private Servings servings;
 }

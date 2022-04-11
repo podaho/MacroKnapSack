@@ -12,7 +12,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Food {
+public class FoodBySearch {
     @JsonProperty("food_description")
     private String foodDescription;
 

@@ -11,6 +11,13 @@ spring:
         provider:
           fat-secret:
             token-uri: https://oauth.fatsecret.com/connect/token
+  datasource:
+    url: jdbc:mysql://localhost:3306/macroknapsack?useSSL=false&serverTimezone=UTC
+    username: root
+    password: 57x72otr
+  jpa:
+    hibernate:
+      ddl-auto: update
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
@@ -29,3 +36,12 @@ basicAuth:
   realm: macro-knap-sack
   userId: admin
   password: admin
+
+async:
+  pool:
+    coreSize: 10
+    maxSize: 15
+    queueCapacity: 10
+  shutdown:
+    waitBeforeShutdown: true
+    waitSeconds: 1

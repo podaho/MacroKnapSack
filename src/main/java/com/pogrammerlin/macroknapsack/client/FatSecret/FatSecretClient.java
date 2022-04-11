@@ -1,5 +1,6 @@
 package com.pogrammerlin.macroknapsack.client.FatSecret;
 
+import com.pogrammerlin.macroknapsack.client.FatSecret.dto.FatSecretSearchByIdResponse;
 import com.pogrammerlin.macroknapsack.client.FatSecret.dto.FatSecretSearchResponse;
 import com.pogrammerlin.macroknapsack.config.OAuthFeignClientConfiguration;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -16,4 +17,9 @@ public interface FatSecretClient {
                                         @RequestParam(value = "page_number", required = false, defaultValue = "5") String pageNumber,
                                         @RequestParam(value = "max_results", required = false, defaultValue = "5") String maxResults,
                                         @RequestParam(value = "format", required = false, defaultValue = "json") String format);
+
+    @GetMapping
+    FatSecretSearchByIdResponse getFoodById(@RequestParam(value = "food_id") String foodId,
+                                            @RequestParam(value = "method", required = false, defaultValue = "food.get.v2") String method,
+                                            @RequestParam(value = "format", required = false, defaultValue = "json") String format);
 }
