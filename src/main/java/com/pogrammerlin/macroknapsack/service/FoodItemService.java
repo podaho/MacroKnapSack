@@ -2,6 +2,7 @@ package com.pogrammerlin.macroknapsack.service;
 
 import com.pogrammerlin.macroknapsack.client.FatSecret.FatSecretClient;
 import com.pogrammerlin.macroknapsack.client.FatSecret.dto.FatSecretSearchByIdResponse;
+import com.pogrammerlin.macroknapsack.client.FatSecret.dto.FatSecretSearchResponse;
 import com.pogrammerlin.macroknapsack.dto.AddFoodItemizedDetails;
 import com.pogrammerlin.macroknapsack.dto.FoodItemRatingRequest;
 import com.pogrammerlin.macroknapsack.dto.request.AddFoodItemRequest;
@@ -28,6 +29,9 @@ import java.util.stream.Collectors;
 
 import static com.pogrammerlin.macroknapsack.constant.Constants.SEARCH_FOODS_BY_ID_QUERY_METHOD;
 import static com.pogrammerlin.macroknapsack.constant.Constants.SEARCH_FOODS_QUERY_FORMAT;
+import static com.pogrammerlin.macroknapsack.constant.Constants.SEARCH_FOODS_QUERY_MAX_RESULTS;
+import static com.pogrammerlin.macroknapsack.constant.Constants.SEARCH_FOODS_QUERY_METHOD;
+import static com.pogrammerlin.macroknapsack.constant.Constants.SEARCH_FOODS_QUERY_PAGE_NUMBER;
 import static com.pogrammerlin.macroknapsack.utility.AsyncHelper.handleFutureError;
 
 @Slf4j
@@ -82,6 +86,14 @@ public class FoodItemService {
                 .addFoodItemizedDetails(addFoodItemizedDetails)
                 .errors(errorList)
                 .build();
+    }
+
+    public FatSecretSearchResponse getFoodSearchResult(String searchTerm) {
+        return fatSecretClient.searchFoods(searchTerm,
+                SEARCH_FOODS_QUERY_METHOD,
+                SEARCH_FOODS_QUERY_PAGE_NUMBER,
+                SEARCH_FOODS_QUERY_MAX_RESULTS,
+                SEARCH_FOODS_QUERY_FORMAT);
     }
 
     private List<CompletableFuture<AddFoodItemizedDetails>> getFoodItemizedDetailsCompletableFutures(Map<String, Short> foodItemExternalIdToRatingMap, Set<FoodItem> foodItemQueryResult, User requestUser, List<String> errors) {
