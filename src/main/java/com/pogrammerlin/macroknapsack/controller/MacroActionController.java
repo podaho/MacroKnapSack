@@ -2,9 +2,7 @@ package com.pogrammerlin.macroknapsack.controller;
 
 import com.pogrammerlin.macroknapsack.dto.request.AddMacroRequest;
 import com.pogrammerlin.macroknapsack.dto.response.AddMacroResponse;
-import com.pogrammerlin.macroknapsack.dto.response.MacroDetailResponse;
 import com.pogrammerlin.macroknapsack.dto.response.MacrosDetailResponse;
-import com.pogrammerlin.macroknapsack.model.Macro;
 import com.pogrammerlin.macroknapsack.service.MacroService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

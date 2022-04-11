@@ -1,11 +1,9 @@
 package com.pogrammerlin.macroknapsack.service;
 
 import com.nimbusds.oauth2.sdk.util.CollectionUtils;
-import com.pogrammerlin.macroknapsack.dto.AddFoodItemizedDetails;
 import com.pogrammerlin.macroknapsack.dto.AddMacroDetails;
 import com.pogrammerlin.macroknapsack.dto.MacroNutrientSpecifications;
 import com.pogrammerlin.macroknapsack.dto.request.AddMacroRequest;
-import com.pogrammerlin.macroknapsack.dto.response.AddFoodItemResponse;
 import com.pogrammerlin.macroknapsack.dto.response.AddMacroResponse;
 import com.pogrammerlin.macroknapsack.dto.response.MacrosDetailResponse;
 import com.pogrammerlin.macroknapsack.mapper.MacroKnapSackDataMapper;

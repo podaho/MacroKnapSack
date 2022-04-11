@@ -1,6 +1,5 @@
 package com.pogrammerlin.macroknapsack.dto.request;
 
-import com.pogrammerlin.macroknapsack.dto.AddMacroDetails;
 import com.pogrammerlin.macroknapsack.dto.MacroNutrientSpecifications;
 import lombok.AllArgsConstructor;
 import lombok.Data;
