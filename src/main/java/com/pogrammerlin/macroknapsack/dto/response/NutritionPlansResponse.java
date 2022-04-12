@@ -1,6 +1,5 @@
 package com.pogrammerlin.macroknapsack.dto.response;
 
-import com.pogrammerlin.macroknapsack.dto.FoodItemizedDetails;
 import com.pogrammerlin.macroknapsack.dto.generic.GenericResponseObject;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,7 +12,6 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddFoodItemResponse extends GenericResponseObject {
-    private long userId;
-    private List<FoodItemizedDetails> foodItemizedDetails;
+public class NutritionPlansResponse extends GenericResponseObject {
+    List<NutritionPlanResponse> nutritionPlanResponses;
 }

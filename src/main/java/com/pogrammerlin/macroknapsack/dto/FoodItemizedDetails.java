@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddFoodItemizedDetails extends DataActionResponseObject {
+public class FoodItemizedDetails extends DataActionResponseObject {
     private String externalId;
     private String name;
     private double kcal;

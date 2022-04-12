@@ -13,7 +13,15 @@ import java.util.List;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AddFoodItemResponse extends GenericResponseObject {
-    private long userId;
-    private List<FoodItemizedDetails> foodItemizedDetails;
+public class NutritionPlanResponse extends GenericResponseObject {
+    private long id;
+    private String name;
+    private long owningUserId;
+    private List<Long> owningMacroGoalIds;
+    private double kcalTotal;
+    private double carbTotal;
+    private double fatTotal;
+    private double proteinTotal;
+    private double fiberTotal;
+    private List<FoodItemizedDetails> foodItems;
 }

@@ -3,7 +3,7 @@ package com.pogrammerlin.macroknapsack.service;
 import com.pogrammerlin.macroknapsack.client.FatSecret.FatSecretClient;
 import com.pogrammerlin.macroknapsack.client.FatSecret.dto.FatSecretSearchByIdResponse;
 import com.pogrammerlin.macroknapsack.client.FatSecret.dto.FatSecretSearchResponse;
-import com.pogrammerlin.macroknapsack.dto.AddFoodItemizedDetails;
+import com.pogrammerlin.macroknapsack.dto.FoodItemizedDetails;
 import com.pogrammerlin.macroknapsack.dto.FoodItemRatingRequest;
 import com.pogrammerlin.macroknapsack.dto.request.AddFoodItemRequest;
 import com.pogrammerlin.macroknapsack.dto.response.AddFoodItemResponse;
@@ -39,8 +39,8 @@ import static com.pogrammerlin.macroknapsack.utility.AsyncHelper.handleFutureErr
 @AllArgsConstructor
 public class FoodItemService {
     private FoodItemRepository foodItemRepository;
-    private FoodItemRatingRepository foodItemRatingRepository;
     private FatSecretClient fatSecretClient;
+    private FoodItemRatingService foodItemRatingService;
     private UserService userService;
     private MacroKnapSackDataMapper mapper;
 
@@ -63,11 +63,11 @@ public class FoodItemService {
                                             .findByExternalIdIn(foodItemExternalIdToRatingMap.keySet());
 
 
-        List<AddFoodItemizedDetails> addFoodItemizedDetails = new ArrayList<>();
+        List<FoodItemizedDetails> addFoodItemizedDetails = new ArrayList<>();
         List<String> errorList = new ArrayList<>();
-        List<CompletableFuture<AddFoodItemizedDetails>> completableFutureList = getFoodItemizedDetailsCompletableFutures(foodItemExternalIdToRatingMap, foodItemQueryResult, requestUser, errorList);
+        List<CompletableFuture<FoodItemizedDetails>> completableFutureList = getFoodItemizedDetailsCompletableFutures(foodItemExternalIdToRatingMap, foodItemQueryResult, requestUser, errorList);
         CompletableFuture<Void> allFutures = CompletableFuture.allOf(completableFutureList.toArray(new CompletableFuture[completableFutureList.size()]));
-        CompletableFuture<List<AddFoodItemizedDetails>> completableFutureResponses = allFutures
+        CompletableFuture<List<FoodItemizedDetails>> completableFutureResponses = allFutures
                 .thenApply(future -> completableFutureList
                         .stream()
                         .map(CompletableFuture::join)
@@ -83,7 +83,7 @@ public class FoodItemService {
 
         return AddFoodItemResponse.builder()
                 .userId(requestUser.getId())
-                .addFoodItemizedDetails(addFoodItemizedDetails)
+                .foodItemizedDetails(addFoodItemizedDetails)
                 .errors(errorList)
                 .build();
     }
@@ -96,8 +96,8 @@ public class FoodItemService {
                 SEARCH_FOODS_QUERY_FORMAT);
     }
 
-    private List<CompletableFuture<AddFoodItemizedDetails>> getFoodItemizedDetailsCompletableFutures(Map<String, Short> foodItemExternalIdToRatingMap, Set<FoodItem> foodItemQueryResult, User requestUser, List<String> errors) {
-        List<CompletableFuture<AddFoodItemizedDetails>> completableFutureList = new ArrayList<>();
+    private List<CompletableFuture<FoodItemizedDetails>> getFoodItemizedDetailsCompletableFutures(Map<String, Short> foodItemExternalIdToRatingMap, Set<FoodItem> foodItemQueryResult, User requestUser, List<String> errors) {
+        List<CompletableFuture<FoodItemizedDetails>> completableFutureList = new ArrayList<>();
         for(Map.Entry<String, Short> mapEntry : foodItemExternalIdToRatingMap.entrySet()) {
             foodItemQueryResult
                     .stream()
@@ -105,13 +105,13 @@ public class FoodItemService {
                     .findFirst()
                     .ifPresentOrElse(
                             foodItem -> {
-                                CompletableFuture<AddFoodItemizedDetails> addFoodItemizedDetailsCompletableFuture
+                                CompletableFuture<FoodItemizedDetails> addFoodItemizedDetailsCompletableFuture
                                         = CompletableFuture.supplyAsync(() -> updateExistingFoodItemRating(foodItem, requestUser, mapEntry.getValue(), false), executor)
                                                             .exceptionally(e -> handleFutureError(e, errors));
                                 completableFutureList.add(addFoodItemizedDetailsCompletableFuture);
                             },
                             () -> {
-                                CompletableFuture<AddFoodItemizedDetails> addFoodItemizedDetailsCompletableFuture
+                                CompletableFuture<FoodItemizedDetails> addFoodItemizedDetailsCompletableFuture
                                         = CompletableFuture.supplyAsync(() -> addNewFoodItemAndRating(mapEntry.getKey(), requestUser, mapEntry.getValue(), true), executor)
                                                             .exceptionally(e -> handleFutureError(e, errors));
                                 completableFutureList.add(addFoodItemizedDetailsCompletableFuture);
@@ -121,8 +121,8 @@ public class FoodItemService {
         return completableFutureList;
     }
 
-    private AddFoodItemizedDetails updateExistingFoodItemRating(FoodItem foodItem, User user, Short rating, boolean isNew) {
-        FoodItemRating foodItemRating = foodItemRatingRepository.findFoodItemRatingByFoodItemAndUser(foodItem, user);
+    private FoodItemizedDetails updateExistingFoodItemRating(FoodItem foodItem, User user, Short rating, boolean isNew) {
+        FoodItemRating foodItemRating = foodItemRatingService.getFoodItemRatingByFoodItemAndUser(foodItem, user);
         if(Objects.isNull(foodItemRating)) {
             foodItemRating = FoodItemRating.builder()
                     .foodItem(foodItem)
@@ -130,11 +130,11 @@ public class FoodItemService {
                     .build();
         }
         foodItemRating.setRating(rating);
-        foodItemRating = foodItemRatingRepository.saveAndFlush(foodItemRating);
-        return mapper.mapAddFoodItemizedDetails(foodItem, foodItemRating, isNew);
+        foodItemRating = foodItemRatingService.upsertFoodItemRating(foodItemRating);
+        return mapper.mapAddFoodItemizedDetails(foodItemRating, isNew);
     }
 
-    private AddFoodItemizedDetails addNewFoodItemAndRating(String externalId, User user, Short rating, boolean isNew) {
+    private FoodItemizedDetails addNewFoodItemAndRating(String externalId, User user, Short rating, boolean isNew) {
         FatSecretSearchByIdResponse foodItemResponse = retrieveFatSecretFoodItemDataByExternalId(externalId);
         FoodItem newFoodItem = mapper.mapFoodItem(foodItemResponse);
         //TODO: null check here and throw exception

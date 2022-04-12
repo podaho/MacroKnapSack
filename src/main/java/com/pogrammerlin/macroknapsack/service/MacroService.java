@@ -39,6 +39,10 @@ public class MacroService {
         return mapper.mapMacrosDetailResponse(macroRepository.findAllByUser(requestedUser));
     }
 
+    public Macro getMacroById(long id) {
+        return macroRepository.getById(id);
+    }
+
     public AddMacroResponse createNewMacroGoals(AddMacroRequest addMacroRequest) {
         User requestUser = userService.getUserByUserId(addMacroRequest.getUserId());
         //TODO: null check here

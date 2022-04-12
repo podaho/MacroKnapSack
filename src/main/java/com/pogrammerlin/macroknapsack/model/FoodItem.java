@@ -21,7 +21,7 @@ import javax.persistence.Table;
 public class FoodItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "foot_item_id")
+    @Column(name = "food_item_id")
     private long id;
 
     @Column(name = "external_id")
